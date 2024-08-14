@@ -14,6 +14,19 @@ def printcl(*args, end="\n", sep=" "):
 
     for i in args:
         print(i, end=sep)
+
         clcolor()
+
+    print(end, end="")
+
+
+def printls(*args, end="\n", sep=" "):
+    clcolor()
+
+    for i in args:
+        for v in i:
+            print(i, end=sep)
+
+            clcolor()
 
     print(end, end="")

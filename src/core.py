@@ -1,4 +1,8 @@
-from colorful import clcolor, printcl
+from colorful import printcl
+from colorful import color as cl
+
+from locales import zh_CN as lang    # 导入语言的方式先做这一个()
+
 
 class NeoPetCode(object):
     def __init__(self, argv: list[str], argc: int, baseapp: dict):
@@ -7,12 +11,17 @@ class NeoPetCode(object):
 
         self.baseapp = baseapp
 
+        self.app = {
+            "name": "NeoPetCode",
+            "version": "Dev Alpha v0.0.1"
+        }
+
     def Cgp_HelpDoc(self, count: int, ShowAll: bool = False, IsCommand: bool = False):
         if IsCommand and (count + 1 < self.argc):
             pass
 
         else:
-            pass
+            printcl(lang.help_doc)
 
     def CheckArgs(self):
         RunCommand: bool = False  # 是否运行指令
@@ -43,4 +52,8 @@ class NeoPetCode(object):
         # 全是什么规则给我都干懵了
 
     def run(self):
+        printcl(f"{cl.cyan}{self.app['name']}")
+        printcl(f"{cl.purple}{self.app['version']}")
+        print()
+
         self.CheckArgs()

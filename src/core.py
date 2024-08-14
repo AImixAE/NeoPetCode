@@ -25,7 +25,7 @@ class NeoPetCode(object):
 
     def CheckArgs(self):
         RunCommand: bool = False  # 是否运行指令
-        RunOption : bool = True   # 是否运行选项
+        RunOption: bool = True   # 是否运行选项
 
         for i in range(1, self.argc):   # 遍历参整
             cnow = self.argv[i]  # 获取当前参数
@@ -42,12 +42,14 @@ class NeoPetCode(object):
             if RunOption:     # 如果运行选项
                 match cnow:   # 匹配规则
                     case "-h" | "--help":
-                        self.Cgp_HelpDoc(ShowAll=False, IsCommand=False, count=i)
+                        self.Cgp_HelpDoc(
+                            ShowAll=False, IsCommand=False, count=i)
 
             if RunCommand:    # 如果要运行命令
                 match cnow:   # 匹配规则
                     case "help":
-                        self.Cgp_HelpDoc(ShowAll=False, IsCommand=True, count=i)
+                        self.Cgp_HelpDoc(
+                            ShowAll=False, IsCommand=True, count=i)
 
         # 全是什么规则给我都干懵了
 

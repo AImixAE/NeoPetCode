@@ -1,8 +1,4 @@
-class Colors:
-    reset = "\033[0m"
-
-
-color = Colors()
+from locales.colors import color
 
 
 def clcolor():
@@ -12,21 +8,25 @@ def clcolor():
 def printcl(*args, end="\n", sep=" "):
     clcolor()
 
-    for i in args:
-        print(i, end=sep)
+    for index, i in enumerate(args):
+        print(i, end="" if index == len(args) - 1 else sep)
 
         clcolor()
 
     print(end, end="")
 
 
-def printls(*args, end="\n", sep=" "):
+def printls(*args, end="\n", sep="\n"):
     clcolor()
 
-    for i in args:
-        for v in i:
-            print(i, end=sep)
+    for index_outer, i in enumerate(args):
+        for index_inner, v in enumerate(i):
+            print(v, end="" if index_inner == len(i) - 1 else sep)
 
             clcolor()
+
+        # 在外层循环的每个列表之后打印 end，但最后一个列表除外
+        # if index_outer != len(args) - 1:
+        #     print(end, end="")
 
     print(end, end="")

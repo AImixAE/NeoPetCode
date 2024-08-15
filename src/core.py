@@ -1,7 +1,8 @@
 from colorful import printcl, printls
 from colorful import color as cl
 
-from locales import zh_CN as lang    # 导入语言的方式先做这一个()
+from locales.zh_CN import lang    # 导入语言的方式先做这一个()
+from locales.default import lang as dlang
 
 
 class NeoPetCode(object):
@@ -16,6 +17,9 @@ class NeoPetCode(object):
             "version": "Dev Alpha v0.0.1"
         }
 
+    def Cgp_icon(self):
+        printls(dlang["icon"])
+
     def Cgp_HelpDoc(
         self,
         count: int,             # 当前遍历的参整
@@ -28,14 +32,14 @@ class NeoPetCode(object):
                         pass
 
             else:
-                printcl(lang.help_doc)
+                printls(lang["help_doc"]["default"])
 
         else:
             if count + 1 < self.argc and "-" in self.argv[count]:
                 pass
 
             else:
-                printls(lang.help_doc["default"])
+                printls(lang["help_doc"]["default"])
 
     def CheckArgs(self):
         RunCommand: bool = False  # 是否运行指令
@@ -59,11 +63,21 @@ class NeoPetCode(object):
                         self.Cgp_HelpDoc(
                             IsCommand=False, count=i)
 
+                        exit()
+
+                    case "--icon":
+                        self.Cgp_icon()
+
+                        # exit()
+                        print()
+
             if RunCommand:    # 如果要运行命令
                 match cnow:   # 匹配规则
                     case "help":
                         self.Cgp_HelpDoc(
                             IsCommand=True, count=i)
+
+                        exit()
 
         # 全是什么规则给我都干懵了
 

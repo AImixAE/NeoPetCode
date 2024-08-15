@@ -1,4 +1,5 @@
 **/venv
+**/target/build/debug/*
+**/target/build/release/*
 
 **/__pycache__
-

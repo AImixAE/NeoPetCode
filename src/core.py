@@ -1,6 +1,8 @@
 from colorful import printcl, printls
 from colorful import color as cl
 
+from logger import warn
+
 from locales.zh_CN import lang    # 导入语言的方式先做这一个()
 from locales.default import lang as dlang
 
@@ -42,44 +44,61 @@ class NeoPetCode(object):
                 printls(lang["help_doc"]["default"])
 
     def CheckArgs(self):
-        RunCommand: bool = False  # 是否运行指令
-        RunOption: bool = True   # 是否运行选项
+        if self.argc > 1:
+            RunCommand: bool = False  # 是否运行指令
+            RunOption: bool = True   # 是否运行选项
 
-        for i in range(1, self.argc):   # 遍历参整
-            cnow = self.argv[i]  # 获取当前参数
+            for i in range(1, self.argc):   # 遍历参整
+                cnow = self.argv[i]  # 获取当前参数
 
-            # 我知道下面这段代码你可能很懵 但你先别懵
-            # 因为我更懵
+                # 我知道下面这段代码你可能很懵 但你先别懵
+                # 因为我更懵
 
-            # 你不得看看是选项是指令啊(bushi)
-            RunOption, RunCommand = (True, False) if (
-                RunOption and   # 如果要匹配选项
-                "-" in cnow     # 选项里指定会包含 "-"
-            ) else (False, True)  # 不然更改规则
+                # 你不得看看是选项是指令啊(bushi)
+                RunOption, RunCommand = (True, False) if (
+                    RunOption and   # 如果要匹配选项
+                    "-" in cnow     # 选项里指定会包含 "-"
+                ) else (False, True)  # 不然更改规则
 
-            if RunOption:     # 如果运行选项
-                match cnow:   # 匹配规则
-                    case "-h" | "--help":
-                        self.Cgp_HelpDoc(
-                            IsCommand=False, count=i)
+                if RunOption:     # 如果运行选项
+                    match cnow:   # 匹配规则
+                        case "-h" | "--help":
+                            self.Cgp_HelpDoc(
+                                IsCommand=False, count=i)
 
-                        exit()
+                            exit()
 
-                    case "--icon":
-                        self.Cgp_icon()
+                        case "--icon":
+                            self.Cgp_icon()
 
-                        # exit()
-                        print()
+                            # exit()
+                            print()
 
-            if RunCommand:    # 如果要运行命令
-                match cnow:   # 匹配规则
-                    case "help":
-                        self.Cgp_HelpDoc(
-                            IsCommand=True, count=i)
+                        case _:
+                            warnmsg = lang["warn"]["optionwarn"]
+                            warn("OptionWarn", warnmsg[0], warnmsg[1])
 
-                        exit()
+                            if "-" not in cnow:
+                                print()
+                                printls(warnmsg[2])
 
-        # 全是什么规则给我都干懵了
+                if RunCommand:    # 如果要运行命令
+                    match cnow:   # 匹配规则
+                        case "h" | "help":
+                            self.Cgp_HelpDoc(
+                                IsCommand=True, count=i)
+
+                            exit()
+
+                        case _:
+                            warnmsg = lang["warn"]["commandwarn"]
+                            warn("CommandWarn", warnmsg[0], warnmsg[1])
+
+            # 全是什么规则给我都干懵了
+
+        else:
+            warnmsg = lang["warn"]["argumentwarn"]
+            warn("ArgumentWarn", warnmsg[0], warnmsg[1])
 
     def run(self):
         printcl(f"{cl.cyan}{self.app['name']}")

@@ -19,25 +19,6 @@ lang = {
     },
 
     "warn": {
-        "commandwarn": [
-            "不支持的命令",
-            f"尝试一下 {cl.purple}npcode {cl.blue}--help {cl.reset}?"
-        ],
-
-        "argumentwarn": [
-            "未输入参数",
-            f"尝试一下 {cl.purple}npcode {cl.blue}--help {cl.reset}?"
-        ],
-
-        "optionwarn": [
-            "选项错误",
-            f"尝试一下 {cl.purple}npcode {cl.blue}--help {cl.reset}?",
-
-            [
-                "也有可能是程序错误",
-                "如果你确认你输入的在程序的支持范围内, ",
-                "请在 github 上提交 Issue"
-            ]
-        ]
+        "commanderror": ["不支持的命令", f"尝试一下 {cl.purple}npcode {cl.blue}--help {cl.reset}?"]
     }
 }

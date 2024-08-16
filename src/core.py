@@ -12,6 +12,9 @@ class NeoPetCode(object):
         self.argv = argv
         self.argc = argc
 
+        self.count = 0
+        self.arg = ""
+
         self.baseapp = baseapp
 
         self.app = {
@@ -24,12 +27,11 @@ class NeoPetCode(object):
 
     def Cgp_HelpDoc(
         self,
-        count: int,             # 当前遍历的参整
         IsCommand: bool = False  # 是否是指令(对查找有用)
     ):
         if IsCommand:
-            if count + 1 < self.argc:
-                match self.argv[count + 1]:
+            if self.count + 1 < self.argc:
+                match self.argv[self.count + 1]:
                     case "help":
                         pass
 
@@ -37,8 +39,17 @@ class NeoPetCode(object):
                 printls(lang["help_doc"]["default"])
 
         else:
-            if count + 1 < self.argc and "-" in self.argv[count]:
-                pass
+            if self.count + 1 < self.argc and "-" in self.argv[self.count + 1]:
+                match self.argv[self.count + 1]:
+                    case "-a" | "--all":
+                        printls(lang["help_doc"]["default"])
+
+                    case _:
+                        warnmsg = lang["warn"]["invalidoptionwarn"]
+                        warn("InvalidOptionWarn", warnmsg[0], warnmsg[1])
+
+                        print()
+                        printls(warnmsg[2])
 
             else:
                 printls(lang["help_doc"]["default"])
@@ -49,7 +60,8 @@ class NeoPetCode(object):
             RunOption: bool = True   # 是否运行选项
 
             for i in range(1, self.argc):   # 遍历参整
-                cnow = self.argv[i]  # 获取当前参数
+                self.arg = self.argv[i]  # 获取当前参数
+                self.count = i
 
                 # 我知道下面这段代码你可能很懵 但你先别懵
                 # 因为我更懵
@@ -57,14 +69,13 @@ class NeoPetCode(object):
                 # 你不得看看是选项是指令啊(bushi)
                 RunOption, RunCommand = (True, False) if (
                     RunOption and   # 如果要匹配选项
-                    "-" in cnow     # 选项里指定会包含 "-"
+                    "-" in self.arg     # 选项里指定会包含 "-"
                 ) else (False, True)  # 不然更改规则
 
                 if RunOption:     # 如果运行选项
-                    match cnow:   # 匹配规则
+                    match self.arg:   # 匹配规则
                         case "-h" | "--help":
-                            self.Cgp_HelpDoc(
-                                IsCommand=False, count=i)
+                            self.Cgp_HelpDoc(IsCommand=False)
 
                             exit()
 
@@ -78,15 +89,14 @@ class NeoPetCode(object):
                             warnmsg = lang["warn"]["optionwarn"]
                             warn("OptionWarn", warnmsg[0], warnmsg[1])
 
-                            if "-" not in cnow:
+                            if "-" not in self.arg:
                                 print()
                                 printls(warnmsg[2])
 
                 if RunCommand:    # 如果要运行命令
-                    match cnow:   # 匹配规则
+                    match self.arg:   # 匹配规则
                         case "h" | "help":
-                            self.Cgp_HelpDoc(
-                                IsCommand=True, count=i)
+                            self.Cgp_HelpDoc(IsCommand=True)
 
                             exit()
 

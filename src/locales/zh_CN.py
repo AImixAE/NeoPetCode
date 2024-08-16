@@ -38,6 +38,16 @@ lang = {
                 "如果你确认你输入的在程序的支持范围内, ",
                 "请在 github 上提交 Issue"
             ]
+        ],
+
+        "invalidoptionwarn": [
+            "无效的帮助选项",
+            f"尝试一下 {cl.purple}npcode {cl.blue}help {cl.reset}?",
+
+            [
+                "一般使用help选项模式时不支持在后一参数输入其他内容",
+                "如果真的需要, 请使用命令模式"
+            ]
         ]
     }
 }

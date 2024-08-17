@@ -6,6 +6,8 @@ from logger import warn
 from locales.zh_CN import lang    # 导入语言的方式先做这一个()
 from locales.default import lang as dlang
 
+from Commands_group import Cgp
+
 
 class NeoPetCode(object):
     def __init__(self, argv: list[str], argc: int, baseapp: dict):
@@ -22,37 +24,7 @@ class NeoPetCode(object):
             "version": "Dev Alpha v0.0.1"
         }
 
-    def Cgp_icon(self):
-        printls(dlang["icon"])
-
-    def Cgp_HelpDoc(
-        self,
-        IsCommand: bool = False  # 是否是指令(对查找有用)
-    ):
-        if IsCommand:
-            if self.count + 1 < self.argc:
-                match self.argv[self.count + 1]:
-                    case "help":
-                        pass
-
-            else:
-                printls(lang["help_doc"]["default"])
-
-        else:
-            if self.count + 1 < self.argc and "-" in self.argv[self.count + 1]:
-                match self.argv[self.count + 1]:
-                    case "-a" | "--all":
-                        printls(lang["help_doc"]["default"])
-
-                    case _:
-                        warnmsg = lang["warn"]["invalidoptionwarn"]
-                        warn("InvalidOptionWarn", warnmsg[0], warnmsg[1])
-
-                        print()
-                        printls(warnmsg[2])
-
-            else:
-                printls(lang["help_doc"]["default"])
+        self.cgp = Cgp(argv=argv, argc=argc, app=self.app, baseapp=baseapp)
 
     def CheckArgs(self):
         if self.argc > 1:
@@ -62,6 +34,9 @@ class NeoPetCode(object):
             for i in range(1, self.argc):   # 遍历参整
                 self.arg = self.argv[i]  # 获取当前参数
                 self.count = i
+
+                self.cgp.update_arg(self.arg)
+                self.cgp.update_count(i)
 
                 # 我知道下面这段代码你可能很懵 但你先别懵
                 # 因为我更懵
@@ -75,12 +50,12 @@ class NeoPetCode(object):
                 if RunOption:     # 如果运行选项
                     match self.arg:   # 匹配规则
                         case "-h" | "--help":
-                            self.Cgp_HelpDoc(IsCommand=False)
+                            self.cgp.HelpDoc(IsCommand=False)
 
                             exit()
 
                         case "--icon":
-                            self.Cgp_icon()
+                            self.cgp.icon()
 
                             # exit()
                             print()

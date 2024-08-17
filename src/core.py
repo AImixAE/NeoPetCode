@@ -71,7 +71,7 @@ class NeoPetCode(object):
                 if RunCommand:    # 如果要运行命令
                     match self.arg:   # 匹配规则
                         case "h" | "help":
-                            self.Cgp_HelpDoc(IsCommand=True)
+                            self.cgp.HelpDoc(IsCommand=True)
 
                             exit()
 
